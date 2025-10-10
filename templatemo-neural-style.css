@@ -1308,14 +1308,20 @@ margin-right: 10px;
   justify-content: center;
 }
 .slides-container {
-  overflow: hidden;
+  display: flex;        /* Flex for horizontal slides */
+  transition: transform 0.5s ease-in-out;
   width: 100%;
+  overflow: hidden;     /* Hide non-active slides */
 }
+
 .slide {
-  min-width: 100%;
-  transition: 0.5s;
-  display: inline-block;
+  min-width: 100%;      /* Each slide takes full width */
+  flex-shrink: 0;       /* Prevent shrinking */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
+}
 }
 .donut {
   position: relative;
@@ -1395,5 +1401,6 @@ margin-right: 10px;
 }
 .prev-slide { left: 0; }
 .next-slide { right: 0; }
+
 
 
