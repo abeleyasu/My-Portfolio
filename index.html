@@ -728,66 +728,45 @@ https://templatemo.com/tm-597-neural-glass
 <script src="templatemo-neural-scripts.js"></script>
 
 <script>
+/* ========== JS for Slider & Animations ========== */
+const slidesContainer = document.querySelector(".slides-container");
+const slides = document.querySelectorAll(".slide");
 let currentSlide = 0;
-const slides = document.querySelectorAll('.slide');
-const totalSlides = slides.length;
 
-document.querySelector('.prev-slide').addEventListener('click', () => {
-  currentSlide = (currentSlide === 0) ? totalSlides-1 : currentSlide-1;
-  updateSlides();
-});
+function showSlide(index) {
+  if (index < 0) currentSlide = slides.length - 1;
+  else if (index >= slides.length) currentSlide = 0;
+  else currentSlide = index;
 
-document.querySelector('.next-slide').addEventListener('click', () => {
-  currentSlide = (currentSlide === totalSlides-1) ? 0 : currentSlide+1;
-  updateSlides();
-});
-
-function updateSlides() {
-  const container = document.querySelector('.slides-container');
-  container.style.transform = `translateX(-${currentSlide*100}%)`;
-  animateDonuts();
-  animateProgressBars();
+  slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+  animateSlide(slides[currentSlide]);
 }
 
-function animateDonuts() {
-  document.querySelectorAll('.slide').forEach((slide, index)=>{
-    if(index === currentSlide){
-      const donut = slide.querySelector('.donut');
-      const percent = donut.getAttribute('data-percent');
-      const fg = donut.querySelector('.donut-fg');
-      const text = donut.querySelector('.donut-text');
-      fg.style.strokeDashoffset = 314 - 314 * percent/100;
-      let current = 0;
-      const interval = setInterval(()=>{
-        current++;
-        text.innerText = current+'%';
-        if(current >= percent) clearInterval(interval);
-      },12);
-    }
+document.querySelector(".prev-slide").addEventListener("click", () => showSlide(currentSlide - 1));
+document.querySelector(".next-slide").addEventListener("click", () => showSlide(currentSlide + 1));
+
+function animateSlide(slide) {
+  // Animate donut
+  const donut = slide.querySelector(".donut");
+  const percent = donut.dataset.percent;
+  const circle = donut.querySelector(".donut-fg");
+  const offset = 314 - (314 * percent) / 100;
+  circle.style.strokeDashoffset = offset;
+
+  // Animate line skills
+  slide.querySelectorAll(".progress-bar").forEach(bar => {
+    bar.style.width = bar.dataset.width;
   });
 }
 
-function animateProgressBars(){
-  document.querySelectorAll('.slide').forEach((slide,index)=>{
-    if(index === currentSlide){
-      slide.querySelectorAll('.progress-bar').forEach(bar=>{
-        bar.style.width = bar.getAttribute('data-value') + '%';
-      });
-    } else {
-      slide.querySelectorAll('.progress-bar').forEach(bar=>{
-        bar.style.width = '0%';
-      });
-    }
-  });
-}
-
-// Initial animation
-updateSlides();
+// Initialize first slide animation
+showSlide(0);
 </script>
 
 </body>
 
 </html>
+
 
 
 
