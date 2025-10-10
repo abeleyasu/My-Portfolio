@@ -742,8 +742,13 @@ function showSlide(index) {
   animateSlide(slides[currentSlide]);
 }
 
-document.querySelector(".prev-slide").addEventListener("click", () => showSlide(currentSlide - 1));
-document.querySelector(".next-slide").addEventListener("click", () => showSlide(currentSlide + 1));
+// Attach buttons
+document.querySelectorAll(".prev-slide").forEach(btn =>
+  btn.addEventListener("click", () => showSlide(currentSlide - 1))
+);
+document.querySelectorAll(".next-slide").forEach(btn =>
+  btn.addEventListener("click", () => showSlide(currentSlide + 1))
+);
 
 function animateSlide(slide) {
   // Animate donut
@@ -755,17 +760,18 @@ function animateSlide(slide) {
 
   // Animate line skills
   slide.querySelectorAll(".progress-bar").forEach(bar => {
-    bar.style.width = bar.dataset.width;
+    bar.style.width = bar.dataset.width; // <-- ensure HTML uses data-width="xx%"
   });
 }
 
-// Initialize first slide animation
+// Initialize first slide
 showSlide(0);
 </script>
 
 </body>
 
 </html>
+
 
 
 
