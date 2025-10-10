@@ -731,63 +731,103 @@ https://templatemo.com/tm-597-neural-glass
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 const totalSlides = slides.length;
+const container = document.querySelector('.slides-container');
+
+// Initialize - hide all slides except first
+function initializeSlides() {
+  slides.forEach((slide, index) => {
+    if (index !== 0) {
+      slide.style.opacity = '0';
+      slide.style.visibility = 'hidden';
+    }
+  });
+}
 
 document.querySelector('.prev-slide').addEventListener('click', () => {
-  currentSlide = (currentSlide === 0) ? totalSlides-1 : currentSlide-1;
+  // Hide current slide
+  slides[currentSlide].style.opacity = '0';
+  slides[currentSlide].style.visibility = 'hidden';
+  
+  currentSlide = (currentSlide === 0) ? totalSlides - 1 : currentSlide - 1;
+  
+  // Show new slide
+  slides[currentSlide].style.opacity = '1';
+  slides[currentSlide].style.visibility = 'visible';
+  
   updateSlides();
 });
 
 document.querySelector('.next-slide').addEventListener('click', () => {
-  currentSlide = (currentSlide === totalSlides-1) ? 0 : currentSlide+1;
+  // Hide current slide
+  slides[currentSlide].style.opacity = '0';
+  slides[currentSlide].style.visibility = 'hidden';
+  
+  currentSlide = (currentSlide === totalSlides - 1) ? 0 : currentSlide + 1;
+  
+  // Show new slide
+  slides[currentSlide].style.opacity = '1';
+  slides[currentSlide].style.visibility = 'visible';
+  
   updateSlides();
 });
 
 function updateSlides() {
-  const container = document.querySelector('.slides-container');
-  container.style.transform = `translateX(-${currentSlide*100}%)`;
-  animateDonuts();
-  animateProgressBars();
+  container.style.transform = `translateX(-${currentSlide * 100}%)`;
+  
+  // Reset and animate only the current slide
+  resetAllAnimations();
+  animateCurrentSlide();
 }
 
-function animateDonuts() {
-  document.querySelectorAll('.slide').forEach((slide, index)=>{
-    if(index === currentSlide){
-      const donut = slide.querySelector('.donut');
-      const percent = donut.getAttribute('data-percent');
-      const fg = donut.querySelector('.donut-fg');
-      const text = donut.querySelector('.donut-text');
-      fg.style.strokeDashoffset = 314 - 314 * percent/100;
-      let current = 0;
-      const interval = setInterval(()=>{
-        current++;
-        text.innerText = current+'%';
-        if(current >= percent) clearInterval(interval);
-      },12);
-    }
+function resetAllAnimations() {
+  // Reset all donuts and progress bars
+  document.querySelectorAll('.donut-fg').forEach(fg => {
+    fg.style.strokeDashoffset = '314';
+  });
+  document.querySelectorAll('.donut-text').forEach(text => {
+    text.innerText = '0%';
+  });
+  document.querySelectorAll('.progress-bar').forEach(bar => {
+    bar.style.width = '0%';
   });
 }
 
-function animateProgressBars(){
-  document.querySelectorAll('.slide').forEach((slide,index)=>{
-    if(index === currentSlide){
-      slide.querySelectorAll('.progress-bar').forEach(bar=>{
-        bar.style.width = bar.getAttribute('data-value') + '%';
-      });
-    } else {
-      slide.querySelectorAll('.progress-bar').forEach(bar=>{
-        bar.style.width = '0%';
-      });
-    }
+function animateCurrentSlide() {
+  const currentSlideElement = slides[currentSlide];
+  
+  // Animate donut
+  const donut = currentSlideElement.querySelector('.donut');
+  const percent = donut.getAttribute('data-percent');
+  const fg = donut.querySelector('.donut-fg');
+  const text = donut.querySelector('.donut-text');
+  
+  // Animate the circle
+  fg.style.strokeDashoffset = 314 - 314 * percent / 100;
+  
+  // Animate the percentage text
+  let current = 0;
+  const interval = setInterval(() => {
+    current++;
+    text.innerText = current + '%';
+    if (current >= percent) clearInterval(interval);
+  }, 20);
+  
+  // Animate progress bars
+  currentSlideElement.querySelectorAll('.progress-bar').forEach(bar => {
+    const value = bar.getAttribute('data-value');
+    bar.style.width = value + '%';
   });
 }
 
-// Initial animation
-updateSlides();
+// Initialize on load
+initializeSlides();
+animateCurrentSlide();
 </script>
 
 </body>
 
 </html>
+
 
 
 
