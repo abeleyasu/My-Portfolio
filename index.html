@@ -488,6 +488,61 @@ https://templatemo.com/tm-597-neural-glass
   </iframe>
 </div>
 
+    <!-- Skills Slider Start -->
+<div id="skills-slider" class="skills-slider">
+  <div class="slides">
+    <!-- Slide 1: Tech -->
+    <div class="slide">
+      <h2>Tech Skills</h2>
+      <div class="donut" data-percent="80">
+        <svg>
+          <circle class="donut-bg" cx="60" cy="60" r="70"></circle>
+          <circle class="donut-fg" cx="60" cy="60" r="70"></circle>
+        </svg>
+        <div class="donut-text">0%</div>
+      </div>
+      <div class="line-skills">
+        <div class="skill">
+          <span>GitHub</span>
+          <div class="progress"><div class="progress-bar" data-value="90"></div></div>
+        </div>
+        <div class="skill">
+          <span>Python</span>
+          <div class="progress"><div class="progress-bar" data-value="75"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Graphics & Video -->
+    <div class="slide">
+      <h2>Graphics & Video</h2>
+      <div class="donut" data-percent="70">
+        <svg>
+          <circle class="donut-bg" cx="60" cy="60" r="70"></circle>
+          <circle class="donut-fg" cx="60" cy="60" r="70"></circle>
+        </svg>
+        <div class="donut-text">0%</div>
+      </div>
+      <div class="line-skills">
+        <div class="skill">
+          <span>Photoshop</span>
+          <div class="progress"><div class="progress-bar" data-value="70"></div></div>
+        </div>
+        <div class="skill">
+          <span>CapCut</span>
+          <div class="progress"><div class="progress-bar" data-value="80"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Arrows -->
+  <div class="nav nav-left">&#10094;</div>
+  <div class="nav nav-right">&#10095;</div>
+</div>
+<!-- Skills Slider End -->
+
+
 
 
     <!-- Section 6: Contact -->
@@ -564,9 +619,65 @@ https://templatemo.com/tm-597-neural-glass
         </div>
     </footer>
 <script src="templatemo-neural-scripts.js"></script>
+
+<script>
+// Slider Logic
+let currentIndex = 0;
+const slidesContainer = document.querySelector('#skills-slider .slides');
+const slides = document.querySelectorAll('#skills-slider .slide');
+const totalSlides = slides.length;
+
+document.querySelector('.nav-left').addEventListener('click', () => {
+  currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+  updateSlide();
+});
+document.querySelector('.nav-right').addEventListener('click', () => {
+  currentIndex = (currentIndex + 1) % totalSlides;
+  updateSlide();
+});
+
+function updateSlide() {
+  slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+  animateSlide(slides[currentIndex]);
+}
+
+// Animate Donut & Progress Bars for a Slide
+function animateSlide(slide) {
+  // Donut Animation
+  const donut = slide.querySelector('.donut');
+  const fg = donut.querySelector('.donut-fg');
+  const text = donut.querySelector('.donut-text');
+  const percent = donut.dataset.percent;
+  const radius = fg.r.baseVal.value;
+  const circumference = 2 * Math.PI * radius;
+  fg.style.strokeDasharray = circumference;
+  fg.style.strokeDashoffset = circumference;
+  setTimeout(() => {
+    fg.style.strokeDashoffset = circumference - (percent / 100) * circumference;
+  }, 100);
+
+  // Animate number in donut
+  let current = 0;
+  const interval = setInterval(() => {
+    if(current >= percent) clearInterval(interval);
+    else { current++; text.textContent = current + '%'; }
+  }, 15);
+
+  // Line Skills Animation
+  slide.querySelectorAll('.progress-bar').forEach(bar => {
+    const value = bar.dataset.value;
+    bar.style.width = value + '%';
+  });
+}
+
+// Initial animation
+updateSlide();
+</script>
+
 </body>
 
 </html>
+
 
 
 
