@@ -726,66 +726,69 @@ https://templatemo.com/tm-597-neural-glass
         </div>
     </footer>
 <script src="templatemo-neural-scripts.js"></script>
+<!-- JS -->
 <script>
-/* ========== JS for Slider & Animations ========== */
-const slidesContainer = document.querySelector(".slides-container");
-const slides = document.querySelectorAll(".slide");
 let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const totalSlides = slides.length;
 
-function showSlide(index) {
-  if (index < 0) {
-    currentSlide = slides.length - 1;
-  } else if (index >= slides.length) {
-    currentSlide = 0;
-  } else {
-    currentSlide = index;
-  }
+document.querySelector('.prev-slide').addEventListener('click', () => {
+  currentSlide = (currentSlide === 0) ? totalSlides-1 : currentSlide-1;
+  updateSlides();
+});
 
-  // Move the slides container
-  slidesContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+document.querySelector('.next-slide').addEventListener('click', () => {
+  currentSlide = (currentSlide === totalSlides-1) ? 0 : currentSlide+1;
+  updateSlides();
+});
 
-  // Animate the current slide
-  animateSlide(slides[currentSlide]);
+function updateSlides() {
+  const container = document.querySelector('.slides-container');
+  container.style.transform = `translateX(-${currentSlide*100}%)`;
+  animateDonuts();
+  animateProgressBars();
 }
 
-document.querySelector(".prev-slide").addEventListener("click", () => showSlide(currentSlide - 1));
-document.querySelector(".next-slide").addEventListener("click", () => showSlide(currentSlide + 1));
-
-function animateSlide(slide) {
-  // Animate donut chart
-  const donut = slide.querySelector(".donut");
-  if (donut) {
-    const percent = donut.dataset.percent;
-    const circle = donut.querySelector(".donut-fg");
-    const offset = 314 - (314 * percent) / 100;
-    circle.style.strokeDashoffset = offset;
-
-    // Animate the text inside donut
-    const donutText = donut.querySelector(".donut-text");
-    let count = 0;
-    const interval = setInterval(() => {
-      if (count >= percent) {
-        clearInterval(interval);
-      } else {
-        count++;
-        donutText.textContent = `${count}%`;
-      }
-    }, 10);
-  }
-
-  // Animate line skills
-  slide.querySelectorAll(".progress-bar").forEach(bar => {
-    bar.style.width = bar.dataset.width; // Make sure HTML has data-width="XX%"
+function animateDonuts() {
+  document.querySelectorAll('.slide').forEach((slide, index)=>{
+    if(index === currentSlide){
+      const donut = slide.querySelector('.donut');
+      const percent = donut.getAttribute('data-percent');
+      const fg = donut.querySelector('.donut-fg');
+      const text = donut.querySelector('.donut-text');
+      fg.style.strokeDashoffset = 314 - 314 * percent/100;
+      let current = 0;
+      const interval = setInterval(()=>{
+        current++;
+        text.innerText = current+'%';
+        if(current >= percent) clearInterval(interval);
+      },12);
+    }
   });
 }
 
-// Initialize first slide
-showSlide(0);
+function animateProgressBars(){
+  document.querySelectorAll('.slide').forEach((slide,index)=>{
+    if(index === currentSlide){
+      slide.querySelectorAll('.progress-bar').forEach(bar=>{
+        bar.style.width = bar.getAttribute('data-value') + '%';
+      });
+    } else {
+      slide.querySelectorAll('.progress-bar').forEach(bar=>{
+        bar.style.width = '0%';
+      });
+    }
+  });
+}
+
+// Initial animation
+updateSlides();
 </script>
 
 </body>
 
 </html>
+
 
 
 
