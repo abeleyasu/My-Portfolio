@@ -197,8 +197,8 @@ const observeElements = () => {
             }
         });
     }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -50px 0px'
+        threshold: 0.2,
+        rootMargin: '0px 0px -100px 0px'
     });
     
     document.querySelectorAll('[data-scroll]').forEach(el => {
@@ -270,9 +270,12 @@ const animateNumbers = () => {
     stats.forEach(stat => {
         const target = stat.textContent.trim();
         
-        // Only animate if it's a number
-        if (/^\d+/.test(target)) {
-            const value = parseInt(target);
+        // Extract numeric value from strings like "98%", "+47%", "$2.3B", etc.
+        const numericMatch = target.match(/[\d.]+/);
+        if (numericMatch) {
+            const value = parseFloat(numericMatch[0]);
+            const prefix = target.match(/^[+\-$£€]/)?.[0] || '';
+            const suffix = target.match(/[%BbMmKk]$/)?.[0] || '';
             const duration = 2000;
             const increment = value / (duration / 16);
             let current = 0;
@@ -280,7 +283,9 @@ const animateNumbers = () => {
             const updateNumber = () => {
                 current += increment;
                 if (current < value) {
-                    stat.textContent = Math.floor(current);
+                    // Format number with appropriate decimal places
+                    const formattedValue = value < 10 ? current.toFixed(1) : Math.floor(current);
+                    stat.textContent = prefix + formattedValue + suffix;
                     requestAnimationFrame(updateNumber);
                 } else {
                     stat.textContent = target;

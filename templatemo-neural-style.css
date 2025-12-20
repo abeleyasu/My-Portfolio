@@ -1415,7 +1415,17 @@ margin-right: 10px;
    ==================================== */
 
 /* Typography Enhancements */
-h1, h2, h3 {
+.hero h1,
+.section-title,
+.case-study-title,
+.philosophy h2,
+.philosophy h3,
+.work-section h2,
+.work-section h3,
+.expertise h2,
+.expertise h3,
+.legacy h2,
+.legacy h3 {
     font-family: 'Playfair Display', Georgia, serif;
     font-weight: 700;
     letter-spacing: -0.02em;
@@ -2264,9 +2274,9 @@ a:focus-visible {
     *,
     *::before,
     *::after {
-        animation-duration: 0.01ms !important;
+        animation: none !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+        transition: none !important;
         scroll-behavior: auto !important;
     }
 }
