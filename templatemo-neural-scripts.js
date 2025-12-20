@@ -188,3 +188,117 @@ https://templatemo.com/tm-597-neural-glass
                 }, 2000);
             }, 1500);
         });
+// Scroll-triggered animations for case studies
+const observeElements = () => {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -50px 0px'
+    });
+    
+    document.querySelectorAll('[data-scroll]').forEach(el => {
+        observer.observe(el);
+    });
+};
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', observeElements);
+
+// Enhanced button click animations
+document.querySelectorAll('.cta-button, .submit-btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+        // Create ripple effect
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size / 2;
+        const y = e.clientY - rect.top - size / 2;
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.classList.add('ripple');
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    });
+});
+
+// Smooth scroll with offset for fixed header
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        
+        if (targetId === '#') return;
+        
+        const target = document.querySelector(targetId);
+        if (target) {
+            const headerOffset = 100;
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Parallax effect for hero section
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroContent = document.querySelector('.hero-content');
+    
+    if (heroContent && scrolled < window.innerHeight) {
+        heroContent.style.transform = `translateY(${scrolled * 0.3}px)`;
+        heroContent.style.opacity = 1 - (scrolled / window.innerHeight) * 0.5;
+    }
+});
+
+// Number counter animation for stats
+const animateNumbers = () => {
+    const stats = document.querySelectorAll('.hero-stat-number, .result-number');
+    
+    stats.forEach(stat => {
+        const target = stat.textContent.trim();
+        
+        // Only animate if it's a number
+        if (/^\d+/.test(target)) {
+            const value = parseInt(target);
+            const duration = 2000;
+            const increment = value / (duration / 16);
+            let current = 0;
+            
+            const updateNumber = () => {
+                current += increment;
+                if (current < value) {
+                    stat.textContent = Math.floor(current);
+                    requestAnimationFrame(updateNumber);
+                } else {
+                    stat.textContent = target;
+                }
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        updateNumber();
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            observer.observe(stat);
+        }
+    });
+};
+
+document.addEventListener('DOMContentLoaded', animateNumbers);
