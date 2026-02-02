@@ -1294,3 +1294,117 @@ margin-right: 10px;
      background: linear-gradient(45deg, #ff0080, #8000ff);
      box-shadow: 0 0 15px rgba(255, 0, 128, 0.7);
 }
+
+
+
+
+
+
+/* Skills Slider Styles */
+.skills-slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden; /* Add this */
+}
+.slides-container {
+  display: flex;        /* Flex for horizontal slides */
+  transition: transform 0.5s ease-in-out;
+  width: 100%;
+  overflow: visible;    /* Change from hidden to visible */
+}
+
+.slide {
+  min-width: 100%;      /* Each slide takes full width */
+  flex-shrink: 0;       /* Prevent shrinking */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 1; /* Ensure slides are visible */
+  visibility: visible; /* Ensure slides are visible */
+}
+.donut {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+}
+.donut svg {
+  transform: rotate(-90deg);
+  width: 120px;
+  height: 120px;
+}
+.donut-bg {
+  fill: none;
+  stroke: #2d1b3d;
+  stroke-width: 15;
+}
+.donut-fg {
+  fill: none;
+  stroke: #e0a3ff;
+  stroke-width: 15;
+  stroke-dasharray: 314; /* 2πr (r=50) */
+  stroke-dashoffset: 314;
+  transition: stroke-dashoffset 1.2s ease;
+}
+.donut-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  font-size: 20px;
+  color: #e0a3ff;
+}
+.line-skills {
+  width: 90%;
+  margin: 20px auto 0;
+  text-align: left;
+}
+.skill {
+  margin-bottom: 12px;
+  color: #e0a3ff;
+}
+.skill span {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+.progress {
+  background: rgba(255,255,255,0.05);
+  border-radius: 8px;
+  overflow: hidden;
+  height: 12px;
+}
+.progress-bar {
+  height: 12px;
+  width: 0;
+  background: linear-gradient(90deg, #e0a3ff, #ff69b4, #9370db);
+  border-radius: 8px;
+  transition: width 1.2s ease;
+}
+.prev-slide, .next-slide {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 36px;
+  background: rgba(255,255,255,0.05);
+  color: #e0a3ff;
+  border: none;
+  cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 10px;
+}
+.prev-slide:hover, .next-slide:hover {
+  background: rgba(224,163,255,0.2);
+  box-shadow: 0 0 15px #e0a3ff;
+}
+.prev-slide { left: 0; }
+.next-slide { right: 0; }
+
+
+
+
+
